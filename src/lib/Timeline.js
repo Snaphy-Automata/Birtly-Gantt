@@ -780,7 +780,7 @@ export default class ReactCalendarTimeline extends Component {
 
       <RowItems
         //Update added on 7th Sept 2018
-        stackItem={this.stackItem}
+        stackItem={this.stackItem.bind(this)}
         setRowListRef={this.props.setRowListRef}
         //Row Props
         clickTolerance={this.props.clickTolerance}
