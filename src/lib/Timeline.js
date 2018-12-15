@@ -628,7 +628,6 @@ export default class ReactCalendarTimeline extends Component {
     const {width} = this.state
     const {
       getItemHeight,
-      getTotalHeight,
       getItemTop
     } = this.props
 
