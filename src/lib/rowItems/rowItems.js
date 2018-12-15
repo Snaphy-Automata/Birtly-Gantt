@@ -11,7 +11,6 @@ import RowItem                      from './RowItem'
 export default class RowItems extends Component {
   static propTypes = {
     //Ref 7th Sept 2018
-    lineHeight: PropTypes.number.isRequired,
     getItemHeight: PropTypes.func.isRequired,
     itemHeightRatio: PropTypes.number.isRequired,
     setRowListRef: PropTypes.func,
@@ -80,15 +79,27 @@ export default class RowItems extends Component {
     //First check if the item is visible or not...
     const {
       items,
+      getItemHeight,
     } = this.props
-
-    const item = items[index]
+    const item   = items[index]
+    const height = getItemHeight(item)
     const ItemComponent = this.ItemComponent;
 
 
     return (
-      <ItemComponent {...this.props} isSelected={this.isItemSelected} itemId={item} key={key} style={style} index={index} />
+      <ItemComponent height={height} {...this.props} isSelected={this.isItemSelected} itemId={item} key={key} style={style} index={index} />
     )
+  }
+
+
+  getRowHeight = ({index}) => {
+    const {
+      items,
+      getItemHeight,
+    } = this.props
+    const item = items[index]
+    const height = getItemHeight(item)
+    return height
   }
 
 
@@ -96,11 +107,7 @@ export default class RowItems extends Component {
     const {
       screenHeight,
       setRowListRef,
-      lineHeight,
-      itemHeightRatio,
-      getItemHeight,
     } = this.props
-    const height = getItemHeight(lineHeight, itemHeightRatio)
     return (
       <List
         ref={(instance) => {
@@ -108,10 +115,10 @@ export default class RowItems extends Component {
         }}
         className="rct-items rct-horizontal-lines"
         width={this.props.canvasWidth}
-        //estimatedRowSize={25}
+        estimatedRowSize={60}
         height={screenHeight}
         rowCount={this.props.items.length}
-        rowHeight={height}
+        rowHeight={this.getRowHeight}
         rowRenderer={this.renderItem}
         style={{
           height: "100%",

@@ -39,6 +39,10 @@ export default class ReactCalendarTimeline extends Component {
     screenHeight:     PropTypes.number.isRequired,
     //Hoc required for fetching item at runtime..
     getItemHoc:       PropTypes.func.isRequired,
+    //Required for finding the height of task at run time..
+    getItemHeight:    PropTypes.func.isRequired,
+    getTotalHeight:   PropTypes.func.isRequired,
+    getItemTop:       PropTypes.func.isRequired,
 
     groups: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     items: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
@@ -351,14 +355,20 @@ export default class ReactCalendarTimeline extends Component {
 
 
   getHeight(){
-    return (this.props.groups.length * this.props.lineHeight);
+    const {getTotalHeight} = this.props
+    const height = getTotalHeight()
+    console.log("Total List height", height)
+    return height;
+    //return (this.props.groups.length * this.props.lineHeight);
   }
+
 
   /**
    * Will fetch the item height..
    */
-  getItemHeight(lineHeight, itemHeightRatio){
-    return lineHeight*itemHeightRatio
+  getItemHeight = (itemId) => {
+    const {getItemHeight} = this.props
+    return getItemHeight(itemId)
   }
 
   // FIXME: this function calls set state EVERY TIME YOU SCROLL
@@ -614,8 +624,14 @@ export default class ReactCalendarTimeline extends Component {
   /**
    * Will add stack item
    */
-  stackItem = (index, item)=>{
+  stackItem = (index, item)=> {
     const {width} = this.state
+    const {
+      getItemHeight,
+      getTotalHeight,
+      getItemTop
+    } = this.props
+
     return stackItem(
       item,
       item,
@@ -627,7 +643,9 @@ export default class ReactCalendarTimeline extends Component {
       this.props.lineHeight,
       this.props.itemHeightRatio,
       this.props.keys,
-      this.state
+      this.state,
+      getItemTop,
+      getItemHeight
     )
   }
 
@@ -763,7 +781,7 @@ export default class ReactCalendarTimeline extends Component {
 
       <RowItems
         //Update added on 7th Sept 2018
-        stackItem={this.stackItem.bind(this)}
+        stackItem={this.stackItem}
         setRowListRef={this.props.setRowListRef}
         //Row Props
         clickTolerance={this.props.clickTolerance}
@@ -1083,6 +1101,7 @@ export default class ReactCalendarTimeline extends Component {
       rightSidebarWidth,
       timeSteps,
       traditionalZoom,
+      getItemHeight,
     } = this.props
     const {
       draggingItem,
@@ -1161,6 +1180,7 @@ export default class ReactCalendarTimeline extends Component {
                         // groupHeights,
                         // groupTops,
                         this.props.screenHeight,
+                        getItemHeight,
                       )
                     }
                     {this.verticalLines(

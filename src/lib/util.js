@@ -20,6 +20,8 @@ export const stackItem=(
   itemHeightRatio,
   keys,
   state,
+  getItemTop,
+  getItemHeight
 ) => {
 
   const {
@@ -41,6 +43,9 @@ export const stackItem=(
     const isDragging = itemId === draggingItem
     const isResizing = itemId === resizingItem
 
+    const groupTop = getItemTop(itemId)
+    const height = getItemHeight(itemId)
+
     let dimension = calculateDimensions({
       itemTimeStart: _get(item, keys.itemTimeStartKey),
       itemTimeEnd: _get(item, keys.itemTimeEndKey),
@@ -60,11 +65,11 @@ export const stackItem=(
         ? newGroupOrder
         : index
       dimension.stack = item?!item.isOverlay:false
-      dimension.height = lineHeight * itemHeightRatio
+      dimension.height = height * itemHeightRatio
       dimension.isDragging = isDragging
     }
-    const groupTop = lineHeight * index
-    return { dimension, groupHeight: lineHeight, groupTop }
+
+    return { dimension, groupHeight: height, groupTop }
 }
 
 export default  stackItem

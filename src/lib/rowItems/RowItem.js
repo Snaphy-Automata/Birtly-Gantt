@@ -37,6 +37,7 @@ const RowItem = (props) => {
     canvasWidth,
     canvasTimeEnd,
     canvasTimeStart,
+    height,
   } = props
 
   const { itemIdKey, itemTimeStartKey, itemTimeEndKey } = props.keys
@@ -49,7 +50,7 @@ const RowItem = (props) => {
         key={`horizontal-line-${index}`}
         style={{
           ...props.style,
-          height: "24px"
+          height,
         }}
       >
       <GroupRow
@@ -129,6 +130,7 @@ RowItem.propTypes = {
   itemId: PropTypes.string.isRequired,
   item: PropTypes.object,
   index: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
   //Row
   lineCount: PropTypes.number.isRequired,
   onRowClick: PropTypes.func.isRequired,
