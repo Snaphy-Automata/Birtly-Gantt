@@ -55,16 +55,30 @@ export default class TimelineElementsHeader extends Component {
             : width < 120 ? f.monthMediumLong : f.monthLong
       )
     }else if (unit === 'week') {
-      const startDay = time.date();
-      let endDate  = moment(time).add(6, 'day').date()
-      if(time.month() !== moment(time).add(6, 'day').month()){
-        endDate = moment(time).endOf('month').date()
-      }
-      const monthWithYear = time.format('YYYY, MMM')
+      const weekEnd = moment(time).add(6, 'day')
+      let endDate   = weekEnd.date()
+      const dateWithYear = time.format('YYYY, MMM D')
+      const dateWithoutYear = time.format('MMM D')
       if(width < 150){
+        const startDay = time.date();
         return `${startDay}-${endDate}`
       }else{
-        return `${monthWithYear} ${startDay}-${endDate}`
+        if(time.month() !== weekEnd.month()){
+          //endDate = moment(time).endOf('month').date()
+          if(time.year() !== weekEnd.year()){
+            const endDateWithYear = weekEnd.format('MMM D, YYYY')
+            const startDateWithYear = time.format('MMM D, YYYY')
+            return `${startDateWithYear} - ${endDateWithYear}`
+          }else{
+            const endDateWithoutYear = weekEnd.format('MMM D')
+            return `${dateWithoutYear}-${endDateWithoutYear}`
+          }
+        }
+        if(moment().year() === time.year()){
+          return `${dateWithoutYear}-${endDate}`
+        }else{
+          return `${dateWithoutYear}-${endDate}`
+        }
       }
 
       // return time.format(
@@ -109,9 +123,12 @@ export default class TimelineElementsHeader extends Component {
               : width < 80 ? f.dayMedium : width < 120 ? f.dayMediumLong : f.dayLong
           )
 
+          //const dayInNumber = time.date()
+
           let daysInOneWord = daysInTwoWords[0]
-          // m | t | w
           return daysInOneWord
+          // m | t | w
+          //return (<span>{dayInNumber}<sup>{daysInOneWord}</sup></span>)
         }else{
           return time.format(
             width < 47
@@ -168,6 +185,7 @@ export default class TimelineElementsHeader extends Component {
     const twoHeaders = minUnit !== 'year'
 
     const topHeaderLabels = []
+
     // add the top header
     if (twoHeaders) {
       const nextUnit = getNextUnit(minUnit)
@@ -197,7 +215,8 @@ export default class TimelineElementsHeader extends Component {
               }`}
               onClick={() => this.handlePeriodClick(time, nextUnit)}
               style={{
-                left: `${left - 1}px`,
+                //left: `${left - 1}px`, //Removed original, 17th Dec 2018, Robins Gupta
+                left: `${left}px`,
                 width: `${labelWidth}px`,
                 height: `${headerLabelGroupHeight}px`,
                 lineHeight: `${headerLabelGroupHeight}px`,
@@ -214,26 +233,42 @@ export default class TimelineElementsHeader extends Component {
     }
 
     const bottomHeaderLabels = []
+    let i=1;
     iterateTimes(
       canvasTimeStart,
       canvasTimeEnd,
       minUnit,
       timeSteps,
       (time, nextTime) => {
-        const left = Math.round((time.valueOf() - canvasTimeStart) * ratio)
-        const minUnitValue = time.get(minUnit === 'day' ? 'date' : minUnit)
-        const firstOfType = minUnitValue === (minUnit === 'day' ? 1 : 0)
-        const labelWidth = Math.round(
+        let isWeekEnd = false
+        const left             = Math.round((time.valueOf() - canvasTimeStart) * ratio)
+        const minUnitValue     = time.get(minUnit === 'day' ? 'date' : minUnit)
+        //const nextMinUnitValue = nextTime.get(minUnit === 'day' ? 'date' : minUnit)
+        const firstOfType      = minUnitValue === (minUnit === 'day' ? 1 : 0)
+        const labelWidth       = Math.round(
           (nextTime.valueOf() - time.valueOf()) * ratio
         )
-        const leftCorrect = firstOfType ? 1 : 0
+
+        if(minUnitValue === 1 && minUnit === 'day'){
+          isWeekEnd = true
+        }else{
+          isWeekEnd = i%8 === 0
+        }
+
+        let labelClassName     = `rct-label ${twoHeaders ? '' : 'rct-label-only'} ${
+          firstOfType ? 'rct-first-of-type' : ''
+        } ${minUnit !== 'month' ? `rct-day-${time.day()}` : ''} `
+        let leftCorrect = 0
+
+        if(isWeekEnd){
+          labelClassName = `${labelClassName} snaphy-week-end`
+        }
+        leftCorrect = firstOfType ? 1 : 0
 
         bottomHeaderLabels.push(
           <div
             key={`label-${time.valueOf()}`}
-            className={`rct-label ${twoHeaders ? '' : 'rct-label-only'} ${
-              firstOfType ? 'rct-first-of-type' : ''
-            } ${minUnit !== 'month' ? `rct-day-${time.day()}` : ''} `}
+            className={labelClassName}
             onClick={() => this.handlePeriodClick(time, minUnit)}
             style={{
               left: `${left - leftCorrect}px`,
@@ -257,6 +292,12 @@ export default class TimelineElementsHeader extends Component {
             {this.subHeaderLabel(time, minUnit, labelWidth)}
           </div>
         )
+
+        if(isWeekEnd){
+          i=1
+        }else{
+          i++
+        }
       }
     )
 

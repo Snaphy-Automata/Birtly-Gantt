@@ -91,24 +91,9 @@ export function iterateHeaderTimes(start, end, unit, timeSteps, callback) {
   }
 
   while (time.valueOf() < end) {
-    let isEndOfMonth = false
-    const month = moment(time).month()
     let nextTime = moment(time).add(timeSteps[unit] || 1, `${unit}s`)
-
-    if(unit === "week"){
-      const nextMonth = nextTime.month()
-      if(month !== nextMonth){
-        nextTime = moment(time).endOf('month').startOf('day')
-        isEndOfMonth = true
-      }
-    }
-
     callback(time, nextTime)
-    if(isEndOfMonth){
-      time = nextTime.add(1, 'day')
-    }else{
-      time = nextTime
-    }
+    time = nextTime
   }
 }
 
