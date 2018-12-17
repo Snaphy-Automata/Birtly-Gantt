@@ -57,7 +57,7 @@ export default class TimelineElementsHeader extends Component {
     }else if (unit === 'week') {
       const weekEnd = moment(time).add(6, 'day')
       let endDate   = weekEnd.date()
-      const dateWithYear = time.format('YYYY, MMM D')
+      //const dateWithYear = time.format('YYYY, MMM D')
       const dateWithoutYear = time.format('MMM D')
       if(width < 150){
         const startDay = time.date();
