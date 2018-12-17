@@ -79,6 +79,27 @@ export default class TimelineElementsHeader extends Component {
         width < 37 ? f.monthShort : width < 85 ? f.monthMedium : f.monthLong
       )
     } else if (unit === 'day') {
+      if(width < 47){
+        if(f.dayShort === 'dd'){
+          //mo | tu | we | th
+          const daysInTwoWords = time.format(
+            width < 47
+              ? f.dayShort
+              : width < 80 ? f.dayMedium : width < 120 ? f.dayMediumLong : f.dayLong
+          )
+
+          let daysInOneWord = daysInTwoWords[0]
+          // m | t | w
+          return daysInOneWord
+        }else{
+          return time.format(
+            width < 47
+              ? f.dayShort
+              : width < 80 ? f.dayMedium : width < 120 ? f.dayMediumLong : f.dayLong
+          )
+        }
+      }
+
       return time.format(
         width < 47
           ? f.dayShort
