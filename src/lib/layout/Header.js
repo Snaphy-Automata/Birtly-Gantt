@@ -31,7 +31,8 @@ class Header extends Component {
       width,
       stickyOffset,
       stickyHeader,
-      headerRef
+      headerRef,
+      setHeader,
     } = this.props
 
     const headerStyle = {

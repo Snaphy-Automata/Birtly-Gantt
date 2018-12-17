@@ -357,7 +357,6 @@ export default class ReactCalendarTimeline extends Component {
   getHeight(){
     const {getTotalHeight} = this.props
     const height = getTotalHeight()
-    console.log("Total List height", height)
     return height;
     //return (this.props.groups.length * this.props.lineHeight);
   }
@@ -899,7 +898,7 @@ export default class ReactCalendarTimeline extends Component {
     headerLabelGroupHeight,
     headerLabelHeight
   ) {
-    const { sidebarWidth, rightSidebarWidth } = this.props
+    const { sidebarWidth, rightSidebarWidth, setHeader } = this.props
     const leftSidebar = sidebarWidth != null &&
       sidebarWidth > 0 && (
         <div
