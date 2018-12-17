@@ -61,7 +61,6 @@ export function calculateTimeForXPosition(
 
 export function iterateTimes(start, end, unit, timeSteps, callback) {
   let time = moment(start).startOf(unit)
-
   if (timeSteps[unit] && timeSteps[unit] > 1) {
     let value = time.get(unit)
     time.set(unit, value - value % timeSteps[unit])
@@ -69,10 +68,50 @@ export function iterateTimes(start, end, unit, timeSteps, callback) {
 
   while (time.valueOf() < end) {
     let nextTime = moment(time).add(timeSteps[unit] || 1, `${unit}s`)
+
+    // if(unit === "week"){
+    //   const nextMonth = nextTime.month()
+    //   if(month !== nextMonth){
+    //     nextTime = moment(time).endOf('month')
+    //   }
+    // }
+
     callback(time, nextTime)
     time = nextTime
   }
 }
+
+
+
+export function iterateHeaderTimes(start, end, unit, timeSteps, callback) {
+  let time = moment(start).startOf(unit)
+  if (timeSteps[unit] && timeSteps[unit] > 1) {
+    let value = time.get(unit)
+    time.set(unit, value - value % timeSteps[unit])
+  }
+
+  while (time.valueOf() < end) {
+    let isEndOfMonth = false
+    const month = moment(time).month()
+    let nextTime = moment(time).add(timeSteps[unit] || 1, `${unit}s`)
+
+    if(unit === "week"){
+      const nextMonth = nextTime.month()
+      if(month !== nextMonth){
+        nextTime = moment(time).endOf('month').startOf('day')
+        isEndOfMonth = true
+      }
+    }
+
+    callback(time, nextTime)
+    if(isEndOfMonth){
+      time = nextTime.add(1, 'day')
+    }else{
+      time = nextTime
+    }
+  }
+}
+
 
 // this function is VERY HOT as its used in Timeline.js render function
 // TODO: check if there are performance implications here
@@ -147,7 +186,10 @@ export function getNextUnit(unit) {
     second: 'minute',
     minute: 'hour',
     hour: 'day',
-    day: 'month',
+    day: 'week',
+    //17 Dec 2018
+    //Update: Add month as day for gantt chart heading.
+    //day: 'month',
     month: 'year'
   }
 

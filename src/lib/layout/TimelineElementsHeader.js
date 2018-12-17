@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import moment from 'moment'
 
-import { iterateTimes, getNextUnit } from '../utility/calendar'
+import { iterateTimes, getNextUnit, iterateHeaderTimes } from '../utility/calendar'
 
 export default class TimelineElementsHeader extends Component {
   static propTypes = {
@@ -54,7 +54,28 @@ export default class TimelineElementsHeader extends Component {
             ? f.monthMedium
             : width < 120 ? f.monthMediumLong : f.monthLong
       )
-    } else if (unit === 'day') {
+    }else if (unit === 'week') {
+      const startDay = time.date();
+      let endDate  = moment(time).add(6, 'day').date()
+      if(time.month() !== moment(time).add(6, 'day').month()){
+        endDate = moment(time).endOf('month').date()
+      }
+      const monthWithYear = time.format('YYYY, MMM')
+      if(width < 150){
+        return `${startDay}-${endDate}`
+      }else{
+        return `${monthWithYear} ${startDay}-${endDate}`
+      }
+
+      // return time.format(
+      //   width < 65
+      //     ? f.monthShort
+      //     : width < 75
+      //       ? f.monthMedium
+      //       : width < 120 ? f.monthMediumLong : f.monthLong
+      // )
+    }
+     else if (unit === 'day') {
       return time.format(width < 150 ? f.dayShort : f.dayLong)
     } else if (unit === 'hour') {
       return time.format(
@@ -150,8 +171,7 @@ export default class TimelineElementsHeader extends Component {
     // add the top header
     if (twoHeaders) {
       const nextUnit = getNextUnit(minUnit)
-
-      iterateTimes(
+      iterateHeaderTimes(
         canvasTimeStart,
         canvasTimeEnd,
         nextUnit,
