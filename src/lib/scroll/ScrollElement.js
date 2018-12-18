@@ -16,7 +16,9 @@ class ScrollElement extends Component {
     onContextMenu: PropTypes.func.isRequired,
     onZoom: PropTypes.func.isRequired,
     onWheelZoom: PropTypes.func.isRequired,
-    onScroll: PropTypes.func.isRequired
+    onScroll: PropTypes.func.isRequired,
+    //Update 18th Dec 2018: Added by Robins
+    getListRef: PropTypes.func.isRequired,
   }
 
   constructor() {
@@ -36,7 +38,6 @@ class ScrollElement extends Component {
     const { width } = this.props
     const scrollComponent = this.scrollComponent
     const scrollX = scrollComponent.scrollLeft
-
     // move the virtual canvas if needed
     // if scrollX is less...i dont know how to explain the logic here
     if (scrollX < width * 0.5) {
@@ -49,8 +50,7 @@ class ScrollElement extends Component {
   }
 
   handleWheel = e => {
-    const { traditionalZoom } = this.props
-
+    const { traditionalZoom, getListRef } = this.props
     e.preventDefault()
 
     // zoom in the time dimension
@@ -74,7 +74,15 @@ class ScrollElement extends Component {
         }
       }
       if (e.deltaY !== 0) {
-        window.scrollTo(window.pageXOffset, window.pageYOffset + e.deltaY)
+        const listRef = getListRef()
+        if(listRef){
+          let top = listRef.getScrollTop() || 0
+          top = top + e.deltaY
+          listRef.scrollTop(top)
+        }else{
+          window.scrollTo(window.pageXOffset, window.pageYOffset + e.deltaY)
+        }
+
         if (traditionalZoom) {
           const parentPosition = getParentPosition(e.currentTarget)
           const xPosition = e.clientX - parentPosition.x

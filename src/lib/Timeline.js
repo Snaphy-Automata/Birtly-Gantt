@@ -246,6 +246,8 @@ export default class ReactCalendarTimeline extends Component {
     getTimelineContext: PropTypes.func
   }
 
+
+
   getChildContext() {
     return {
       getTimelineContext: () => {
@@ -281,6 +283,7 @@ export default class ReactCalendarTimeline extends Component {
 
     let visibleTimeStart = null
     let visibleTimeEnd = null
+    this.rowListRef = null
 
     if (this.props.defaultTimeStart && this.props.defaultTimeEnd) {
       visibleTimeStart = this.props.defaultTimeStart.valueOf()
@@ -294,6 +297,7 @@ export default class ReactCalendarTimeline extends Component {
         'You must provide either "defaultTimeStart" and "defaultTimeEnd" or "visibleTimeStart" and "visibleTimeEnd" to initialize the Timeline'
       )
     }
+
 
     this.state = {
       width: 1000,
@@ -589,6 +593,7 @@ export default class ReactCalendarTimeline extends Component {
     }
   }
 
+
   // TODO: this is very similar to timeFromItemEvent, aside from which element to get offsets
   // from.  Look to consolidate the logic for determining coordinate to time
   // as well as generalizing how we get time from click on the canvas
@@ -647,6 +652,7 @@ export default class ReactCalendarTimeline extends Component {
     )
   }
 
+
   timeFromItemEvent = e => {
     const { width, visibleTimeStart, visibleTimeEnd } = this.state
     const { dragSnap } = this.props
@@ -666,6 +672,7 @@ export default class ReactCalendarTimeline extends Component {
     return time
   }
 
+
   dragItem = (item, dragTime, newGroupOrder) => {
     let newGroup = this.props.groups[newGroupOrder]
     const keys = this.props.keys
@@ -678,12 +685,14 @@ export default class ReactCalendarTimeline extends Component {
     })
   }
 
+
   dropItem = (item, dragTime, newGroupOrder) => {
     this.setState({ draggingItem: null, dragTime: null, dragGroupTitle: null })
     if (this.props.onItemMove) {
       this.props.onItemMove(item, dragTime, newGroupOrder)
     }
   }
+
 
   resizingItem = (item, resizeTime, edge) => {
     this.setState({
@@ -693,12 +702,14 @@ export default class ReactCalendarTimeline extends Component {
     })
   }
 
+
   resizedItem = (item, resizeTime, edge, timeDelta) => {
     this.setState({ resizingItem: null, resizingEdge: null, resizeTime: null })
     if (this.props.onItemResize && timeDelta !== 0) {
       this.props.onItemResize(item, resizeTime, edge)
     }
   }
+
 
   verticalLines(
     canvasTimeStart,
@@ -721,6 +732,7 @@ export default class ReactCalendarTimeline extends Component {
     )
   }
 
+
   handleRowClick = (e, rowIndex) => {
     // shouldnt this be handled by the user, as far as when to deselect an item?
     if (this.state.selectedItem) {
@@ -738,6 +750,7 @@ export default class ReactCalendarTimeline extends Component {
     this.props.onCanvasClick(groupId, time, e)
   }
 
+
   handleRowDoubleClick = (e, rowIndex) => {
     if (this.props.onCanvasDoubleClick == null) return
 
@@ -749,6 +762,7 @@ export default class ReactCalendarTimeline extends Component {
     const groupId = this.props.groups[rowIndex]
     this.props.onCanvasDoubleClick(groupId, time, e)
   }
+
 
   horizontalLines(canvasWidth, groupHeights) {
     return (
@@ -762,6 +776,17 @@ export default class ReactCalendarTimeline extends Component {
       />
     )
   }
+
+
+  setRowListRef = (ref) => {
+    this.props.setRowListRef(ref)
+    //this.rowListRef  = ref
+  }
+
+
+  // getRowListRef = () => {
+  //   return this.rowListRef
+  // }
 
 
   rowItems(
@@ -780,7 +805,7 @@ export default class ReactCalendarTimeline extends Component {
       <RowItems
         //Update added on 7th Sept 2018
         stackItem={this.stackItem.bind(this)}
-        setRowListRef={this.props.setRowListRef}
+        setRowListRef={this.setRowListRef}
         //Row Props
         clickTolerance={this.props.clickTolerance}
         onRowClick={this.handleRowClick}
@@ -1151,6 +1176,8 @@ export default class ReactCalendarTimeline extends Component {
               {sidebarWidth > 0 ? this.sidebar(this.props.screenHeight) : null}
                 <ScrollElement
                   scrollRef={el => (this.scrollComponent = el)}
+                  //getRowListRef={this.getRowListRef}
+                  getListRef={this.props.getListRef}
                   width={width}
                   height={totalListHeight}
                   onZoom={this.changeZoom}
