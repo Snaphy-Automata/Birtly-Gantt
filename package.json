@@ -1,5 +1,5 @@
 {
-  "name": "snaphy-calendar-timeline",
+  "name": "birtly-calendar-timeline",
   "version": "0.18.4",
   "description": "automata calendar timeline",
   "main": "lib/index.js",
