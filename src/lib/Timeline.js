@@ -911,10 +911,7 @@ export default class ReactCalendarTimeline extends Component {
 
     const rightSidebar = rightSidebarWidth != null &&
       rightSidebarWidth > 0 && (
-        <div
-          className="rct-sidebar-header rct-sidebar-right"
-          style={{ width: this.props.rightSidebarWidth }}
-        >
+        <div className="rct-sidebar-header rct-sidebar-right" style={{ width: this.props.rightSidebarWidth }}>
           {this.props.rightSidebarContent}
         </div>
       )
