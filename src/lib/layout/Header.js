@@ -32,13 +32,11 @@ class Header extends Component {
       stickyOffset,
       stickyHeader,
       headerRef,
-      setHeader,
     } = this.props
 
     const headerStyle = {
       top: stickyHeader ? stickyOffset || 0 : 0
     }
-
     const headerClass = stickyHeader ? 'header-sticky' : ''
     return (
       <div
