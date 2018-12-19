@@ -296,6 +296,7 @@ export default class Item extends Component {
         }
       })
       .on('resizestart', e => {
+        console.log("I am starting resizing..")
         if (this.props.selected) {
           this.setState({
             resizing: true,
