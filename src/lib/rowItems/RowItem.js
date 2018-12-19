@@ -73,6 +73,7 @@ const RowItem = (props) => {
           keys={props.keys}
           order={index}
           dimensions={dimension}
+          isExternalDragHandler={props.isExternalDragHandler}
           selected={props.isSelected(item, itemIdKey)}
           canChangeGroup={
             _get(item, 'canChangeGroup') !== undefined
@@ -166,6 +167,7 @@ RowItem.propTypes = {
   topOffset: PropTypes.number,
   useResizeHandle: PropTypes.bool,
   isSelected: PropTypes.func.isRequired,
+  isExternalDragHandler: PropTypes.bool.isRequired,
 }
 
 export default RowItem

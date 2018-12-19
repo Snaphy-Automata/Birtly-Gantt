@@ -50,10 +50,12 @@ export default class RowItems extends Component {
     selected: PropTypes.array,
     topOffset: PropTypes.number,
     useResizeHandle: PropTypes.bool,
+    isExternalDragHandler: PropTypes.bool,
   }
 
   static defaultProps = {
-    selected: []
+    selected: [],
+    isExternalDragHandler: false,
   }
 
   constructor(props){

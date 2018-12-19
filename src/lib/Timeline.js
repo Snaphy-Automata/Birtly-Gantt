@@ -34,15 +34,16 @@ export default class ReactCalendarTimeline extends Component {
     //Update 6th Sept 2018
     //By Robins Gupta
     //Specifying the screen height is necessary..
-    setListReference: PropTypes.func.isRequired,
-    setRowListRef:    PropTypes.func.isRequired,
-    screenHeight:     PropTypes.number.isRequired,
+    setListReference:      PropTypes.func.isRequired,
+    setRowListRef:         PropTypes.func.isRequired,
+    screenHeight:          PropTypes.number.isRequired,
     //Hoc required for fetching item at runtime..
-    getItemHoc:       PropTypes.func.isRequired,
+    getItemHoc:            PropTypes.func.isRequired,
     //Required for finding the height of task at run time..
-    getItemHeight:    PropTypes.func.isRequired,
-    getTotalHeight:   PropTypes.func.isRequired,
-    getItemTop:       PropTypes.func.isRequired,
+    getItemHeight:         PropTypes.func.isRequired,
+    getTotalHeight:        PropTypes.func.isRequired,
+    getItemTop:            PropTypes.func.isRequired,
+    isExternalDragHandler: PropTypes.bool, //When drag-handler is provided by external api..
 
     groups: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     items: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
@@ -169,6 +170,7 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   static defaultProps = {
+    isExternalDragHandler: false,
     sidebarWidth: 150,
     rightSidebarWidth: 0,
     dragSnap: 1000 * 60 * 15, // 15min
@@ -801,11 +803,11 @@ export default class ReactCalendarTimeline extends Component {
     screenHeight,
   ){
     return (
-
       <RowItems
         //Update added on 7th Sept 2018
         stackItem={this.stackItem.bind(this)}
         setRowListRef={this.setRowListRef}
+        isExternalDragHandler={this.props.isExternalDragHandler}
         //Row Props
         clickTolerance={this.props.clickTolerance}
         onRowClick={this.handleRowClick}

@@ -45,11 +45,13 @@ export default class Item extends Component {
     //groupTops: PropTypes.array,
     useResizeHandle: PropTypes.bool,
     moveResizeValidator: PropTypes.func,
-    onItemDoubleClick: PropTypes.func
+    onItemDoubleClick: PropTypes.func,
+    isExternalDragHandler: PropTypes.bool,
   }
 
   static defaultProps = {
-    selected: false
+    selected: false,
+    isExternalDragHandler: false,
   }
 
   static contextTypes = {
@@ -496,11 +498,21 @@ export default class Item extends Component {
   renderContent() {
     const timelineContext = this.context.getTimelineContext()
     const Comp = this.props.itemRenderer
+    let otherProps = {}
+    const dragRight = this.dragRight
+    const dragLeft  = this.dragRight
+    if(this.props.isExternalDragHandler){
+      otherProps = {
+        dragRightRef:{dragRight},
+        dragLeftRef:{dragLeft}
+      }
+    }
     if (Comp) {
       return <Comp
         item={this.props.item}
         selected={this.props.selected}
         timelineContext={timelineContext}
+        {...otherProps}
       />
     } else {
       return this.itemTitle
@@ -554,7 +566,7 @@ export default class Item extends Component {
         onContextMenu={this.handleContextMenu}
         style={style}
       >
-        {this.props.useResizeHandle && showInnerContents ? (
+        {this.props.useResizeHandle && showInnerContents && !this.props.isExternalDragHandler ? (
           <div ref={el => (this.dragLeft = el)} className="rct-drag-left" />
         ) : (
           ''
@@ -573,7 +585,7 @@ export default class Item extends Component {
           ''
         )}
 
-        {this.props.useResizeHandle && showInnerContents ? (
+        {this.props.useResizeHandle && showInnerContents && !this.props.isExternalDragHandler ? (
           <div ref={el => (this.dragRight = el)} className="rct-drag-right" />
         ) : (
           ''
