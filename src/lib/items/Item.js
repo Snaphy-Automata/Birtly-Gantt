@@ -499,12 +499,9 @@ export default class Item extends Component {
     const timelineContext = this.context.getTimelineContext()
     const Comp = this.props.itemRenderer
     let otherProps = {}
-    const dragRight = this.dragRight
-    const dragLeft  = this.dragRight
     if(this.props.isExternalDragHandler){
       otherProps = {
-        dragRightRef:{dragRight},
-        dragLeftRef:{dragLeft}
+        setDragRef: this.setDragRef,
       }
     }
     if (Comp) {
@@ -516,6 +513,15 @@ export default class Item extends Component {
       />
     } else {
       return this.itemTitle
+    }
+  }
+
+
+  setDragRef = (ref, isLeftSide=true) => {
+    if(isLeftSide){
+      this.dragLeft = ref
+    }else{
+      this.dragRight = ref
     }
   }
 
