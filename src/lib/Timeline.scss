@@ -223,10 +223,10 @@ $weekend: rgba(250, 246, 225, 0.5);
       border-bottom: $border-width solid $border-color;
 
       &.rct-sidebar-row-odd {
-        background: $row-background-odd;
+        // background: $row-background-odd;
       }
       &.rct-sidebar-row-even {
-        background: $row-background-even;
+        // background: $row-background-even;
       }
     }
   }
@@ -253,12 +253,12 @@ $weekend: rgba(250, 246, 225, 0.5);
       box-sizing: content-box;
       z-index: 40;
     }
-    .rct-hl-odd {
-      background: $row-background-odd;
-    }
-    .rct-hl-even {
-      background: $row-background-even;
-    }
+    // .rct-hl-odd {
+    //   background: $row-background-odd;
+    // }
+    // .rct-hl-even {
+    //   background: $row-background-even;
+    // }
   }
 
   .rct-cursor-line {

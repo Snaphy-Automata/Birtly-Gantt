@@ -801,6 +801,7 @@ export default class ReactCalendarTimeline extends Component {
     // groupHeights,
     // groupTops,
     screenHeight,
+    totalListHeight,
   ){
     return (
       <RowItems
@@ -845,6 +846,7 @@ export default class ReactCalendarTimeline extends Component {
         getItemHeight={this.getItemHeight}
         screenHeight={screenHeight}
         getItemHoc={this.props.getItemHoc}
+        totalListHeight={totalListHeight}
         minimumWidthForItemContentVisibility={
           this.props.minimumWidthForItemContentVisibility
         }
@@ -1066,9 +1068,9 @@ export default class ReactCalendarTimeline extends Component {
     canvasTimeStart,
     canvasTimeEnd,
     canvasWidth,
-    dimensionItems,
-    groupHeights,
-    groupTops,
+    // dimensionItems,
+    // groupHeights,
+    // groupTops,
     height,
     headerHeight,
     visibleTimeStart,
@@ -1091,13 +1093,13 @@ export default class ReactCalendarTimeline extends Component {
       canvasWidth,
       visibleTimeStart: visibleTimeStart,
       visibleTimeEnd: visibleTimeEnd,
-      dimensionItems,
+      //dimensionItems,
       items: this.props.items,
       groups: this.props.groups,
       keys: this.props.keys,
       // TODO: combine these two
-      groupHeights: groupHeights,
-      groupTops: groupTops,
+      //groupHeights: groupHeights,
+      //groupTops: groupTops,
       selected:
         this.state.selectedItem && !this.props.selected
           ? [this.state.selectedItem]
@@ -1193,6 +1195,15 @@ export default class ReactCalendarTimeline extends Component {
                   onContextMenu={this.handleScrollContextMenu}
                 >
                   <MarkerCanvas>
+                    {this.verticalLines(
+                      canvasTimeStart,
+                      canvasTimeEnd,
+                      canvasWidth,
+                      minUnit,
+                      timeSteps,
+                      totalListHeight,
+                      headerHeight
+                    )}
                     {
                       this.rowItems(
                         canvasTimeStart,
@@ -1205,32 +1216,24 @@ export default class ReactCalendarTimeline extends Component {
                         // groupTops,
                         this.props.screenHeight,
                         getItemHeight,
+                        totalListHeight,
                       )
-                    }
-                    {this.verticalLines(
-                      canvasTimeStart,
-                      canvasTimeEnd,
-                      canvasWidth,
-                      minUnit,
-                      timeSteps,
-                      totalListHeight,
-                      headerHeight
-                    )}
+                    }         
                     {/* {this.infoLabel()} */}
-                    {/* {this.childrenWithProps(
+                    {this.childrenWithProps(
                       canvasTimeStart,
                       canvasTimeEnd,
                       canvasWidth,
-                      dimensionItems,
-                      groupHeights,
-                      groupTops,
-                      height,
+                      // dimensionItems,
+                      // groupHeights,
+                      // groupTops,
+                      totalListHeight,
                       headerHeight,
                       visibleTimeStart,
                       visibleTimeEnd,
                       minUnit,
                       timeSteps
-                    )} */}
+                    )}
                   </MarkerCanvas>
                 </ScrollElement>
                 {/* {rightSidebarWidth > 0
