@@ -801,6 +801,7 @@ export default class ReactCalendarTimeline extends Component {
     // groupHeights,
     // groupTops,
     screenHeight,
+    getItemHeight,
     totalListHeight,
   ){
     return (

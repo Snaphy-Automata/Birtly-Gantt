@@ -1,7 +1,7 @@
 //Created by Robins
 //10th Sept 2018
 import PropTypes                    from 'prop-types'
-import React, { Component }         from 'react'
+import React, { Component, Fragment }         from 'react'
 
 
 //Custom import
@@ -45,76 +45,106 @@ const RowItem = (props) => {
   const startDateMs = _get(item, itemTimeStartKey)
   const endDateMs   = _get(item, itemTimeEndKey)
   const isVisible = startDateMs <= canvasTimeEnd && endDateMs >= canvasTimeStart
+  const totalHeight = props.totalListHeight
   return (
-    <div
-        key={`horizontal-line-${index}`}
-        style={{
-          ...props.style,
-          height,
-        }}
-      >
-      <GroupRow
-        clickTolerance={clickTolerance}
-        onClick={evt => onRowClick(evt, index)}
-        onDoubleClick={evt => onRowDoubleClick(evt, index)}
-        key={`horizontal-line-${index}`}
-        isEvenRow={index % 2 === 0}
-        style={{
-          width: `${canvasWidth}px`,
-          height: `${groupHeight - 1}px`,
-        }}
-      />
-      {isVisible &&
-        <Item
-          index={index}
-          style={{}}
-          key={_get(item, itemIdKey)}
-          item={item}
-          keys={props.keys}
-          order={index}
-          dimensions={dimension}
-          isExternalDragHandler={props.isExternalDragHandler}
-          selected={props.isSelected(item, itemIdKey)}
-          canChangeGroup={
-            _get(item, 'canChangeGroup') !== undefined
-              ? _get(item, 'canChangeGroup')
-              : props.canChangeGroup
-          }
-          canMove={
-            _get(item, 'canMove') !== undefined
-              ? _get(item, 'canMove')
-              : props.canMove
-          }
-          canResizeLeft={canResizeLeft(item, props.canResize)}
-          canResizeRight={canResizeRight(item, props.canResize)}
-          canSelect={
-            _get(item, 'canSelect') !== undefined
-              ? _get(item, 'canSelect')
-              : props.canSelect
-          }
-          useResizeHandle={props.useResizeHandle}
-          topOffset={props.topOffset}
-          groupTop={groupTop}
-          canvasTimeStart={props.canvasTimeStart}
-          canvasTimeEnd={props.canvasTimeEnd}
-          canvasWidth={props.canvasWidth}
-          dragSnap={props.dragSnap}
-          minResizeWidth={props.minResizeWidth}
-          onResizing={props.itemResizing}
-          onResized={props.itemResized}
-          moveResizeValidator={props.moveResizeValidator}
-          onDrag={props.itemDrag}
-          onDrop={props.itemDrop}
-          onItemDoubleClick={props.onItemDoubleClick}
-          onContextMenu={props.onItemContextMenu}
-          onSelect={props.itemSelect}
-          itemRenderer={props.itemRenderer}
-          minimumWidthForItemContentVisibility={
-            minimumWidthForItemContentVisibility
-          }
+    <Fragment>
+        <div
+          key={`horizontal-line-${index}`}
+          style={{
+            ...props.style,
+            height,
+          }}
+        >
+        <GroupRow
+          clickTolerance={clickTolerance}
+          onClick={evt => onRowClick(evt, index)}
+          onDoubleClick={evt => onRowDoubleClick(evt, index)}
+          key={`horizontal-line-${index}`}
+          isEvenRow={index % 2 === 0}
+          style={{
+            width: `${canvasWidth}px`,
+            height: `${groupHeight - 1}px`,
+          }}
         />
+        {isVisible &&
+          <Item
+            index={index}
+            style={{}}
+            key={_get(item, itemIdKey)}
+            item={item}
+            keys={props.keys}
+            order={index}
+            dimensions={dimension}
+            isExternalDragHandler={props.isExternalDragHandler}
+            selected={props.isSelected(item, itemIdKey)}
+            canChangeGroup={
+              _get(item, 'canChangeGroup') !== undefined
+                ? _get(item, 'canChangeGroup')
+                : props.canChangeGroup
+            }
+            canMove={
+              _get(item, 'canMove') !== undefined
+                ? _get(item, 'canMove')
+                : props.canMove
+            }
+            canResizeLeft={canResizeLeft(item, props.canResize)}
+            canResizeRight={canResizeRight(item, props.canResize)}
+            canSelect={
+              _get(item, 'canSelect') !== undefined
+                ? _get(item, 'canSelect')
+                : props.canSelect
+            }
+            useResizeHandle={props.useResizeHandle}
+            topOffset={props.topOffset}
+            groupTop={groupTop}
+            canvasTimeStart={props.canvasTimeStart}
+            canvasTimeEnd={props.canvasTimeEnd}
+            canvasWidth={props.canvasWidth}
+            dragSnap={props.dragSnap}
+            minResizeWidth={props.minResizeWidth}
+            onResizing={props.itemResizing}
+            onResized={props.itemResized}
+            moveResizeValidator={props.moveResizeValidator}
+            onDrag={props.itemDrag}
+            onDrop={props.itemDrop}
+            onItemDoubleClick={props.onItemDoubleClick}
+            onContextMenu={props.onItemContextMenu}
+            onSelect={props.itemSelect}
+            itemRenderer={props.itemRenderer}
+            minimumWidthForItemContentVisibility={
+              minimumWidthForItemContentVisibility
+            }
+          />
+        }
+      </div>
+      {
+        item &&
+        <div  
+          id={`marker-${item.id}`}   
+          style={{
+            display: "none",
+            pointerEvents: 'none',
+            top: '0px',
+            position: "absolute",
+            height: `${totalHeight}px`,
+            left: `${dimension.left}px`,
+            width: `${dimension.width}px`,
+            zIndex:1,
+            borderRight: "1px solid #339999",
+            borderLeft: "1px solid #339999"
+          }}
+        >
+          <div style={{
+            height:"100%",
+            width:"100%",
+            opacity:"0.1",
+            backgroundColor: "#339999",
+          }}></div>
+        </div>
       }
-    </div>
+        
+    </Fragment>
+    
   )
 
 }
@@ -168,6 +198,7 @@ RowItem.propTypes = {
   useResizeHandle: PropTypes.bool,
   isSelected: PropTypes.func.isRequired,
   isExternalDragHandler: PropTypes.bool.isRequired,
+  totalListHeight: PropTypes.number,
 }
 
 export default RowItem

@@ -170,6 +170,11 @@ export default class TimelineElementsHeader extends Component {
     return willUpate
   }
 
+  getStartOfDay = () => {
+    const start = new Date();
+    return start.setHours(0,0,0,0);
+  }
+
   render() {
     const {
       canvasTimeStart,
@@ -183,7 +188,8 @@ export default class TimelineElementsHeader extends Component {
     } = this.props
     const ratio = canvasWidth / (canvasTimeEnd - canvasTimeStart)
     const twoHeaders = minUnit !== 'year'
-
+    //Update: Robins - 13th March 2019
+    const startOfDayMs = this.getStartOfDay()
     const topHeaderLabels = []
 
     // add the top header
@@ -254,6 +260,7 @@ export default class TimelineElementsHeader extends Component {
         }else{
           isWeekEnd = i%8 === 0
         }
+        
 
         let labelClassName     = `rct-label ${twoHeaders ? '' : 'rct-label-only'} ${
           firstOfType ? 'rct-first-of-type' : ''
@@ -263,6 +270,11 @@ export default class TimelineElementsHeader extends Component {
         if(isWeekEnd){
           labelClassName = `${labelClassName} snaphy-week-end`
         }
+
+        if(startOfDayMs === time.valueOf()){
+          labelClassName = `${labelClassName} today`
+        }
+
         leftCorrect = firstOfType ? 1 : 0
 
         bottomHeaderLabels.push(

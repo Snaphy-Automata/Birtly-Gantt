@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import interact from 'interactjs'
 import moment from 'moment'
@@ -36,6 +36,7 @@ export default class Item extends Component {
     onResized: PropTypes.func,
     onContextMenu: PropTypes.func,
     itemRenderer: PropTypes.func,
+    //totalListHeight: PropTypes.number,
 
     itemProps: PropTypes.object,
     canSelect: PropTypes.bool,
@@ -525,7 +526,31 @@ export default class Item extends Component {
     }
   }
 
+
+  onMouseEnter = () => {
+    const {item} = this.props
+  
+    const markerId = `marker-${item.id}`
+    const elem = document.getElementById(markerId)
+    if(elem){
+      elem.style.display = "block"
+    }
+
+  }
+
+  onMouseLeave = () => {
+    const {item} = this.props
+    const markerId = `marker-${item.id}`
+    const elem = document.getElementById(markerId)
+    if(elem){
+      elem.style.display = "none"
+    }
+
+  }
+
   render() {
+    // const totalHeight = this.props.totalListHeight
+    // console.log("TOtal height", totalHeight)
     const dimensions = this.props.dimensions
     if (typeof this.props.order === 'undefined' || this.props.order === null) {
       return null
@@ -558,45 +583,50 @@ export default class Item extends Component {
     // TODO: conditionals are really ugly.  could use Fragment if supporting React 16+ but for now, it'll
     // be ugly
     return (
-      <div
-        {...this.props.item.itemProps}
-        key={this.itemId}
-        ref={el => (this.item = el)}
-        className={classNames}
-        title={this.itemDivTitle}
-        onMouseDown={this.onMouseDown}
-        onMouseUp={this.onMouseUp}
-        onTouchStart={this.onTouchStart}
-        onTouchEnd={this.onTouchEnd}
-        onDoubleClick={this.handleDoubleClick}
-        onContextMenu={this.handleContextMenu}
-        style={style}
-      >
-        {this.props.useResizeHandle && showInnerContents && !this.props.isExternalDragHandler ? (
-          <div ref={el => (this.dragLeft = el)} className="rct-drag-left" />
-        ) : (
-          ''
-        )}
 
-        {showInnerContents ? (
+       
           <div
-            className="rct-item-content"
-            style={{
-              maxWidth: `${dimensions.width}px`
-            }}
-          >
-            {this.renderContent()}
-          </div>
-        ) : (
-          ''
-        )}
+          {...this.props.item.itemProps}
+          key={this.itemId}
+          ref={el => (this.item = el)}
+          className={classNames}
+          title={this.itemDivTitle}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+          onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
+          onTouchStart={this.onTouchStart}
+          onTouchEnd={this.onTouchEnd}
+          onDoubleClick={this.handleDoubleClick}
+          onContextMenu={this.handleContextMenu}
+          style={style}
+        >
+          {this.props.useResizeHandle && showInnerContents && !this.props.isExternalDragHandler ? (
+            <div ref={el => (this.dragLeft = el)} className="rct-drag-left" />
+          ) : (
+            ''
+          )}
 
-        {this.props.useResizeHandle && showInnerContents && !this.props.isExternalDragHandler ? (
-          <div ref={el => (this.dragRight = el)} className="rct-drag-right" />
-        ) : (
-          ''
-        )}
-      </div>
+          {showInnerContents ? (
+            <div
+              
+              className="rct-item-content"
+              style={{
+                maxWidth: `${dimensions.width}px`
+              }}
+            >
+              {this.renderContent()}
+            </div>
+          ) : (
+            ''
+          )}
+
+          {this.props.useResizeHandle && showInnerContents && !this.props.isExternalDragHandler ? (
+            <div ref={el => (this.dragRight = el)} className="rct-drag-right" />
+          ) : (
+            ''
+          )}
+        </div>
     )
   }
 }

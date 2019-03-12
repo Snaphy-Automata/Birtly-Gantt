@@ -51,6 +51,7 @@ export default class RowItems extends Component {
     topOffset: PropTypes.number,
     useResizeHandle: PropTypes.bool,
     isExternalDragHandler: PropTypes.bool,
+    //totalListHeight: PropTypes.number,
   }
 
   static defaultProps = {
