@@ -1033,15 +1033,6 @@ binary-extensions@^1.0.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.12.0.tgz#c2d780f53d45bba8317a8902d4ceeaf3a6385b14"
 
-birtly-calendar-timeline@^0.18.8:
-  version "0.18.8"
-  resolved "https://registry.yarnpkg.com/birtly-calendar-timeline/-/birtly-calendar-timeline-0.18.8.tgz#a41d5f0285fd2225b1e6d0212b9776cb4efc9d50"
-  dependencies:
-    create-react-context "^0.2.2"
-    element-resize-detector "^1.1.12"
-    lodash.isequal "^4.5.0"
-    react-virtualized "^9.20.1"
-
 block-stream@*:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/block-stream/-/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"

@@ -22,6 +22,7 @@ const canResizeRight = (item, canResize) => {
   return value === 'right' || value === 'both' || value === true
 }
 
+
 const RowItem = (props) => {
   //First check if the item is visible or not...
   const {
@@ -38,8 +39,8 @@ const RowItem = (props) => {
     canvasTimeEnd,
     canvasTimeStart,
     height,
+    markerClassName
   } = props
-
   const { itemIdKey, itemTimeStartKey, itemTimeEndKey } = props.keys
   const {dimension, groupHeight, groupTop} = stackItem(index, item)
   const startDateMs = _get(item, itemTimeStartKey)
@@ -119,7 +120,8 @@ const RowItem = (props) => {
       </div>
       {
         item &&
-        <div  
+        <div
+          className={markerClassName}  
           id={`marker-${item.id}`}   
           style={{
             display: "none",

@@ -269,6 +269,10 @@ export default class Item extends Component {
       })
       .on('dragend', e => {
         if (this.state.dragging) {
+          //Hide marker is if getting displayed
+          if(!this.MouseEnterActive){
+            this.hideMarker()
+          }
           if (this.props.onDrop) {
             let dragTime = this.dragTime(e)
 
@@ -343,6 +347,10 @@ export default class Item extends Component {
       })
       .on('resizeend', e => {
         if (this.state.resizing) {
+          //Hide marker is if getting displayed
+          if(!this.MouseEnterActive){
+            this.hideMarker()
+          }
           const { resizeEdge } = this.state
           const time =
             resizeEdge === 'left' ? this.itemTimeStart : this.itemTimeEnd
@@ -459,6 +467,10 @@ export default class Item extends Component {
       this.startedClicking = false
       this.actualClick(e, 'click')
     }
+
+    if(!this.MouseEnterActive){
+      this.hideMarker()
+    }
   }
 
   onTouchStart = e => {
@@ -529,7 +541,7 @@ export default class Item extends Component {
 
   onMouseEnter = () => {
     const {item} = this.props
-  
+    this.MouseEnterActive = true
     const markerId = `marker-${item.id}`
     const elem = document.getElementById(markerId)
     if(elem){
@@ -539,18 +551,23 @@ export default class Item extends Component {
   }
 
   onMouseLeave = () => {
+    this.MouseEnterActive = false
+    const shouldClose = this.state.dragging || this.state.resizing
+    if(!shouldClose){
+      this.hideMarker()
+    }
+  }
+
+  hideMarker = () => {
     const {item} = this.props
     const markerId = `marker-${item.id}`
     const elem = document.getElementById(markerId)
-    if(elem){
+    if(elem && !this.startedClicking){
       elem.style.display = "none"
     }
-
   }
 
   render() {
-    // const totalHeight = this.props.totalListHeight
-    // console.log("TOtal height", totalHeight)
     const dimensions = this.props.dimensions
     if (typeof this.props.order === 'undefined' || this.props.order === null) {
       return null
