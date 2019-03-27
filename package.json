@@ -1,6 +1,6 @@
 {
   "name": "birtly-calendar-timeline",
-  "version": "0.18.9",
+  "version": "0.18.10",
   "description": "automata calendar timeline",
   "main": "lib/index.js",
   "scripts": {
