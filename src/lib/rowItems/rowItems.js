@@ -72,7 +72,7 @@ export default class RowItems extends Component {
       return this.props.selectedItem === _get(item, itemIdKey)
     } else {
       let target = _get(item, itemIdKey)
-      return this.props.selected.includes(target)
+      return this.props.selected.indexOf(target) !== -1;
     }
   }
 
